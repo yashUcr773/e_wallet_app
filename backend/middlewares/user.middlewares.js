@@ -86,7 +86,17 @@ function userExistsMiddleware(method) {
 function authMiddleware(req, res, next) {
     try {
         const authorization = req.headers?.authorization?.split(" ")[1];
-        const { userId } = JWT.verify(authorization, CONSTANTS.JWTSECRET);
+        const { userId, expiryAt } = JWT.verify(
+            authorization,
+            CONSTANTS.JWTSECRET
+        );
+
+        if (expiryAt <= Date.now()) {
+            return res.status(403).json({
+                message: "Invalid Credentials",
+            });
+        }
+
         res.locals.userId = userId;
         next();
     } catch (e) {

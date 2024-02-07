@@ -41,10 +41,20 @@ router.post(
                 balance: getRandomBalance(1, 10000),
             });
 
-            const token = JWT.sign({ userId: user._id }, CONSTANTS.JWTSECRET);
+            const token = JWT.sign(
+                {
+                    userId: user._id,
+                    expiryAt: Date.now() + CONSTANTS.EXPIRYTIME,
+                },
+                CONSTANTS.JWTSECRET
+            );
             return res.status(200).json({
                 message: "User created successfully",
                 token: token,
+                userId: user._id,
+                email: user.email,
+                firstname: user.firstname,
+                lastname: user.lastname,
             });
         } catch (e) {
             console.log(e);
@@ -65,9 +75,16 @@ router.post("/signin", userExistsMiddleware("signin"), async (req, res) => {
 
         const user = res.locals.user;
 
-        const token = JWT.sign({ userId: user._id }, CONSTANTS.JWTSECRET);
+        const token = JWT.sign(
+            { userId: user._id, expiryAt: Date.now() + CONSTANTS.EXPIRYTIME },
+            CONSTANTS.JWTSECRET
+        );
         return res.status(200).json({
             token: token,
+            userId: user._id,
+            email: user.email,
+            firstname: user.firstname,
+            lastname: user.lastname,
         });
     } catch (e) {
         console.log(e);
@@ -142,6 +159,27 @@ router.get("/bulk", authMiddleware, async (req, res) => {
     } catch (e) {
         console.log(e);
         res.status(413).json({ message: "Error while fetching users" });
+    }
+});
+
+router.post("/checkAuth", async (req, res) => {
+    const token = req.body?.token?.split(" ")[1];
+    try {
+        const { userId, expiryAt } = JWT.verify(token, CONSTANTS.JWTSECRET);
+        const user = await db.USER.findOne(
+            { _id: userId },
+            { firstname: 1, lastname: 1, email: 1, _id: 1 }
+        );
+        const newToken = JWT.sign(
+            { userId: user._id, expiryAt: Date.now() + CONSTANTS.EXPIRYTIME },
+            CONSTANTS.JWTSECRET
+        );
+        res.status(200).json({ token: newToken, user });
+    } catch (e) {
+        console.log(e);
+        return res.status(403).json({
+            message: "Invalid Credentials",
+        });
     }
 });
 
