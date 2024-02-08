@@ -10,7 +10,7 @@ import { CheckAuth } from './CheckAuth';
 
 
 export function Content() {
-    return <main className="flex flex-col p-8 bg-gray-200 justify-center items-center">
+    return <main className="flex flex-col p-8 bg-gray-200 justify-center items-center" style={{ minHeight: "calc(100vh - 80px)" }}>
 
         <Routes>
             <Route path="/signup" element={<Signup />} />

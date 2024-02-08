@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { isSignedInAtom, userAtom } from '../store/atoms/user';
+import { ProfileLogo } from './ProfileLogo'
 
 export function Header() {
 
@@ -29,9 +30,8 @@ export function Header() {
                 <span className='font-bold text-xl'>
                     Hello, {user.firstname}
                 </span>
-
-                <div id="dropdownDefaultButton" data-dropdown-toggle="dropdown" onClick={() => { setShowModal(p => !p) }} className=' cursor-pointer flex profile-circle border border-slate-500 bg-slate-400 rounded-full p-2 w-12 h-12 items-center justify-center'>
-                    <span className='font-bold text-xl select-none'>{user.firstname[0]}</span>
+                <div id="dropdownDefaultButton" data-dropdown-toggle="dropdown" onClick={() => {setShowModal(p => !p) }} >
+                    <ProfileLogo content={user.firstname[0]} />
                 </div>
                 <div id="dropdown" className={`z-10 ${showModal ? '' : 'hidden'} bg-gray-900 divide-y divide-white rounded-lg shadow w-44  absolute -bottom-[75%] translate-y-[75%] select-none`}>
                     <ul className={`py-2 text-sm text-white`} aria-labelledby="dropdownDefaultButton">
