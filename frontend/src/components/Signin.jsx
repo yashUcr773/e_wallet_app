@@ -5,12 +5,13 @@ import axios from 'axios'
 import { CONSTANTS } from "../../config/CONSTANTS"
 import { isSignedInAtom, userAtom } from '../store/atoms/user'
 import { useSetRecoilState } from 'recoil'
+import { Loader } from './Loader';
 
 export function Signin() {
 
     const navigate = useNavigate();
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("yg3752@gmail.com")
+    const [password, setPassword] = useState("123456")
     const [errorObj, setErrorObj] = useState({
         email: false,
         pass: false
@@ -18,6 +19,7 @@ export function Signin() {
     const [formError, setFormError] = useState("")
     const setUser = useSetRecoilState(userAtom)
     const setIsSignedIn = useSetRecoilState(isSignedInAtom)
+    const [showLoader, setShowLoader] = useState(false)
 
     useEffect(() => {
         const listener = event => {
@@ -42,13 +44,13 @@ export function Signin() {
             setErrorObj((p) => ({ ...p, 'pass': true }))
         }
 
-        console.log(email, password)
-
         try {
-
+            
+            setShowLoader(true)
             let response = await axios.post(CONSTANTS.APIBASEURL + '/user/signin', {
                 email, password
             })
+            setShowLoader(false)
 
             localStorage.setItem('token', `Bearer ${response.data.token}`)
             setIsSignedIn(true)
@@ -60,6 +62,7 @@ export function Signin() {
         } catch (e) {
             setFormError(e.response.data.message)
         }
+        setShowLoader(false)
 
     }
 
@@ -77,7 +80,7 @@ export function Signin() {
             </div>
             <div className='form-footer flex flex-col justify-center items-center'>
                 <div className='error-container text-red-500 font-semibold text-xl p-2 mt-2'>{formError}</div>
-                <button className='w-full border-2 p-4 text-xl mt-4 rounded-xl bg-black text-white border-black' onClick={handleSignIn}>Sign in</button>
+                <button className='w-full border-2 p-4 text-xl mt-4 rounded-xl bg-black text-white border-black flex flex-row gap-2 justify-center items-center h-16' onClick={handleSignIn}>Sign in {showLoader ? <Loader></Loader> : null}</button>
                 <span className='w-full text-center mt-6 font-medium text-xl'>Don't have an account? <a className='underline cursor-pointer' onClick={() => { navigate('/signup') }}>Sign Up</a></span>
             </div>
         </div>

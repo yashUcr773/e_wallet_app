@@ -5,6 +5,7 @@ import axios from 'axios'
 import { CONSTANTS } from "../../config/CONSTANTS"
 import { isSignedInAtom, userAtom } from '../store/atoms/user'
 import { useSetRecoilState } from 'recoil'
+import { Loader } from './Loader';
 
 
 export function Signup() {
@@ -23,6 +24,7 @@ export function Signup() {
     const [formError, setFormError] = useState("")
     const setUser = useSetRecoilState(userAtom)
     const setIsSignedIn = useSetRecoilState(isSignedInAtom)
+    const [showLoader, setShowLoader] = useState(false)
 
     useEffect(() => {
         const listener = event => {
@@ -54,10 +56,12 @@ export function Signup() {
         }
 
         try {
-
+            setShowLoader(true)
             let response = await axios.post(CONSTANTS.APIBASEURL + '/user/signup', {
                 firstname: firstName, lastname: lastName, email, password
             })
+            setShowLoader(false)
+
             localStorage.setItem('token', `Bearer ${response.data.token}`)
             setIsSignedIn(true)
             setUser({
@@ -68,6 +72,7 @@ export function Signup() {
         } catch (e) {
             setFormError(e.response.data.message)
         }
+        setShowLoader(false)
 
     }
 
@@ -89,7 +94,7 @@ export function Signup() {
             </div>
             <div className='form-footer flex flex-col justify-center items-center'>
                 <div className='error-container text-red-500 font-semibold text-xl p-2 mt-2'>{formError}</div>
-                <button className='w-full border-2 p-4 text-xl mt-4 rounded-xl bg-black text-white border-black' onClick={handleSignUp}>Sign Up</button>
+                <button className='w-full border-2 p-4 text-xl mt-4 rounded-xl bg-black text-white border-black flex flex-row gap-2 justify-center items-center h-16' onClick={handleSignUp}>Sign Up {showLoader ? <Loader></Loader> : null}</button>
                 <span className='w-full text-center mt-6 font-medium text-xl'>Already have an account? <a className='underline cursor-pointer' onClick={() => { navigate('/signin') }}>Login</a></span>
             </div>
         </div>

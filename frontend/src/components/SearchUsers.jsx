@@ -2,11 +2,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { CONSTANTS } from '../../config/CONSTANTS'
 import { useNavigate } from 'react-router-dom'
+import { Loader } from './Loader'
 
 let timeout;
 export function SearchUsers() {
     const [filter, setFilter] = useState("")
     const [users, setUsers] = useState([])
+    const [networkCallStatus, setNetworkCallStatus] = useState(false)
 
     useEffect(() => {
         fetchUsers()
@@ -24,6 +26,8 @@ export function SearchUsers() {
         } catch (e) {
             console.log(e)
         }
+        setNetworkCallStatus(true)
+
     }
 
     async function filterChangeHandler(e) {
@@ -36,9 +40,9 @@ export function SearchUsers() {
 
     return <>
         <input className='p-2 border border-slate-300 bg-gray-50 rounded-md' placeholder='Search users...' value={filter} onChange={(e) => filterChangeHandler(e)}></input>
-        <div className='users-container flex flex-col gap-8 mt-8'>
+        {networkCallStatus ? <div className='users-container flex flex-col gap-8 mt-8'>
             {users.map(user => { return <User key={user._id} user={user}></User> })}
-        </div>
+        </div> : <div className="flex flex-row justify-center items-center mt-8"><Loader></Loader></div>}
     </>
 }
 
