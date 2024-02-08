@@ -7,8 +7,7 @@ import { RecoilRoot } from 'recoil'
 
 function App() {
 
-    return (
-        <div>
+    return <div>
             <RecoilRoot>
                 <BrowserRouter>
                     <Header></Header>
@@ -17,7 +16,6 @@ function App() {
                 </BrowserRouter>
             </RecoilRoot>
         </div>
-    )
 }
 
 export default App

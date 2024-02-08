@@ -32,17 +32,23 @@ export function Signin() {
         return () => {
             document.removeEventListener("keydown", listener);
         };
-    }, []);
+    }, [email, password]);
 
     async function handleSignIn() {
 
+        let earlyReturn = false
         setFormError("")
-        if (email == "") {
+        if (!email || email == "") {
             setErrorObj((p) => ({ ...p, 'email': true }))
+            setFormError("Enter valid credentials")
+            earlyReturn = true
         }
-        if (password == "") {
+        if (!password || password == "") {
             setErrorObj((p) => ({ ...p, 'pass': true }))
+            setFormError("Enter valid credentials")
+            earlyReturn = true
         }
+        if (earlyReturn) return
 
         try {
 

@@ -37,23 +37,34 @@ export function Signup() {
         return () => {
             document.removeEventListener("keydown", listener);
         };
-    }, []);
+    }, [firstName, lastName, email, password]);
 
     async function handleSignUp() {
 
+        let earlyReturn = false
         setFormError("")
-        if (firstName == "") {
+        if (!firstName || firstName == "") {
             setErrorObj((p) => ({ ...p, 'fName': true }))
+            setFormError("Enter valid credentials")
+            earlyReturn = true
         }
-        if (lastName == "") {
+        if (!lastName || lastName == "") {
             setErrorObj((p) => ({ ...p, 'lName': true }))
+            setFormError("Enter valid credentials")
+            earlyReturn = true
         }
-        if (email == "") {
+        if (!email || email == "") {
             setErrorObj((p) => ({ ...p, 'email': true }))
+            setFormError("Enter valid credentials")
+            earlyReturn = true
         }
-        if (password == "") {
+        if (!password || password == "") {
             setErrorObj((p) => ({ ...p, 'pass': true }))
+            setFormError("Enter valid credentials")
+            earlyReturn = true
         }
+
+        if (earlyReturn) return
 
         try {
             setShowLoader(true)

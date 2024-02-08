@@ -15,7 +15,7 @@ export function SendMoney() {
 
     async function initiateTransfer() {
 
-        if (amount == 0 || amount == "") {
+        if (!amount || amount == 0 || amount == "") {
             setAmount("")
             setNetworkFeedback('Enter valid amount')
             setTransferSuccess(false)

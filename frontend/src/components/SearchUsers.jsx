@@ -17,7 +17,6 @@ export function SearchUsers() {
     async function fetchUsers(f) {
         try {
 
-            console.log(filter, f, 'in search')
             let response = await axios.get(CONSTANTS.APIBASEURL + '/user/bulk?filter=' + (f || ""), {
                 headers: {
                     'authorization': localStorage.getItem('token'),
