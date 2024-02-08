@@ -10,8 +10,8 @@ import { Loader } from './Loader';
 export function Signin() {
 
     const navigate = useNavigate();
-    const [email, setEmail] = useState("yg3752@gmail.com")
-    const [password, setPassword] = useState("123456")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [errorObj, setErrorObj] = useState({
         email: false,
         pass: false
@@ -45,7 +45,7 @@ export function Signin() {
         }
 
         try {
-            
+
             setShowLoader(true)
             let response = await axios.post(CONSTANTS.APIBASEURL + '/user/signin', {
                 email, password
