@@ -1,6 +1,12 @@
 
-## Build a basic version of PayTM
+## Build a basic version of E-wallet App
 
-Todos
-- add pagination in users
-- debouncer in search users
+# Functionality
+- Signin
+- Signup
+- Search users
+- Send money
+
+# Tech Stack
+- React + Recoil, Tailwind for FE
+- Express, Node, MongoDB for BE

@@ -14,10 +14,11 @@ export function SearchUsers() {
         fetchUsers()
     }, [])
 
-    async function fetchUsers() {
+    async function fetchUsers(f) {
         try {
 
-            let response = await axios.get(CONSTANTS.APIBASEURL + '/user/bulk?filter=' + filter, {
+            console.log(filter, f, 'in search')
+            let response = await axios.get(CONSTANTS.APIBASEURL + '/user/bulk?filter=' + (f || ""), {
                 headers: {
                     'authorization': localStorage.getItem('token'),
                 }
@@ -34,7 +35,7 @@ export function SearchUsers() {
         setFilter(e.target.value)
         clearTimeout(timeout)
         timeout = setTimeout(() => {
-            fetchUsers()
+            fetchUsers(e.target.value)
         }, 1000)
     }
 
