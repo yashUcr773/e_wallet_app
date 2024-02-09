@@ -61,6 +61,6 @@ export function User({ user }) {
             </div>
             <span className='text-lg'>{user.firstname} {user.lastname}</span>
         </div>
-        <button className='bg-black border border-black text-white px-6 py-3 rounded-lg' onClick={sendMoney}>Send Money</button>
+        <button className='bg-black border border-black text-white px-2 sm:px-6 py-3 rounded-lg' onClick={sendMoney}>Send Money</button>
     </div>
 }

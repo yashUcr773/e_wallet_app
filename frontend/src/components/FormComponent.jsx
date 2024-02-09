@@ -16,10 +16,10 @@ export const FormComponent = memo(({ label, placeholder, type, formSetter, error
     }
 
     return <div className='form-row flex flex-col gap-2 mb-2 relative'>
-        <label className='font-bold text-xl'>{label}</label>
+        <label >{label}</label>
         <input placeholder={placeholder} type={type == 'password' && showPassword ? "text" : type}
             onChange={handleChange}
-            className={`border-2 border-slate-200 rounded-md font-semibold text-xl p-2.5 px-3 bg-gray-50 ${errorObj[errorKey] ? 'border-red-200' : ''}`}></input>
+            className={`border-2 border-slate-200 rounded-md  p-2.5 px-3 bg-gray-50 ${errorObj[errorKey] ? 'border-red-200' : ''}`}></input>
         <div className="absolute right-3 top-12 bg-white cursor-pointer">
             {type == 'password' ? <div>
                 {showPassword ?

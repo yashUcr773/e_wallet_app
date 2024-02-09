@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { CONSTANTS } from '../../config/CONSTANTS';
 import { Loader } from './Loader'
 import { ProfileLogo } from './ProfileLogo'
+import { useEnterListener } from '../hooks/useEnterListener'
 
 export function SendMoney() {
     const location = useLocation();
@@ -12,6 +13,7 @@ export function SendMoney() {
     const [showLoader, setShowLoader] = useState(false)
     const [networkFeedback, setNetworkFeedback] = useState("")
     const [transferSuccess, setTransferSuccess] = useState(false)
+    useEnterListener([amount], initiateTransfer)
 
     async function initiateTransfer() {
 
@@ -41,7 +43,7 @@ export function SendMoney() {
         setShowLoader(false)
     }
 
-    return <div className='send-money-container flex shadow-lg flex-col items-center justify-center  rounded-lg p-8 w-[400px] bg-white'>
+    return <div className='send-money-container flex shadow-lg flex-col items-center justify-center  rounded-lg p-8 w-full sm:w-[400px] bg-white'>
         <span className='font-bold text-2xl'>Send Money</span>
         <div className='flex flex-row items-center justify-start w-full gap-4 mt-20'>
 

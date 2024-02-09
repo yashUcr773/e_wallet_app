@@ -52,7 +52,7 @@ function userInputValidator(method) {
 function userExistsMiddleware(method) {
     if (method == "signup") {
         return async function (req, res, next) {
-            const email = req.body.email;
+            const email = req.body?.email?.toLowerCase();
 
             res.locals.userExists = false;
             let user = await db.USER.findOne({
@@ -66,7 +66,7 @@ function userExistsMiddleware(method) {
         };
     } else {
         return async function (req, res, next) {
-            const email = req.body.email;
+            const email = req.body?.email?.toLowerCase();
             const password = req.body.password || "";
 
             res.locals.userExists = false;

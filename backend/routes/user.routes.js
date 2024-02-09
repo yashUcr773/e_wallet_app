@@ -18,7 +18,7 @@ router.post(
     userExistsMiddleware("signup"),
     async (req, res) => {
         try {
-            const email = req.body.email;
+            const email = req.body?.email?.toLowerCase();
             const firstname = req.body.firstname;
             const lastname = req.body.lastname;
             const password = req.body.password;

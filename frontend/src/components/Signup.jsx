@@ -6,6 +6,7 @@ import { CONSTANTS } from "../../config/CONSTANTS"
 import { isSignedInAtom, userAtom } from '../store/atoms/user'
 import { useSetRecoilState } from 'recoil'
 import { Loader } from './Loader';
+import { useEnterListener } from '../hooks/useEnterListener'
 
 
 export function Signup() {
@@ -25,19 +26,7 @@ export function Signup() {
     const setUser = useSetRecoilState(userAtom)
     const setIsSignedIn = useSetRecoilState(isSignedInAtom)
     const [showLoader, setShowLoader] = useState(false)
-
-    useEffect(() => {
-        const listener = event => {
-            if (event.code === "Enter" || event.code === "NumpadEnter") {
-                event.preventDefault();
-                handleSignUp()
-            }
-        };
-        document.addEventListener("keydown", listener);
-        return () => {
-            document.removeEventListener("keydown", listener);
-        };
-    }, [firstName, lastName, email, password]);
+    useEnterListener([firstName, lastName, email, password], handleSignUp)
 
     async function handleSignUp() {
 
@@ -87,11 +76,11 @@ export function Signup() {
 
     }
 
-    return <div className='flex items-center justify-center'>
-        <div className='form border shadow-lg p-8 bg-white rounded-2xl w-[500px]'>
+    return <div className='flex items-center justify-center font-medium sm:font-semibold text-lg sm:text-xl'>
+        <div className='form border shadow-lg p-8 bg-white rounded-2xl w-full sm:w-[500px]'>
             <div className='form-header flex flex-col gap-4 justify-center items-center mb-8'>
-                <h3 className='font-extrabold text-5xl'>Sign Up</h3>
-                <span className='text-slate-500 text-2xl font-semibold text-center'>Enter the information to create an account</span>
+                <h3 className='font-extrabold text-3xl sm:text-4xl'>Sign Up</h3>
+                <span className='text-slate-500  text-center'>Enter the information to create an account</span>
             </div>
             <div className='form-content flex flex-col gap-2'>
                 <FormComponent label={"First Name"} placeholder={"John"} type={"text"} formSetter={setFirstName}
@@ -104,9 +93,9 @@ export function Signup() {
                     errorObj={errorObj} errorKey={'pass'} errorObjSetter={setErrorObj} />
             </div>
             <div className='form-footer flex flex-col justify-center items-center'>
-                <div className='error-container text-red-500 font-semibold text-xl p-2 mt-2'>{formError}</div>
+                <div className='error-container text-red-500  p-2 mt-2'>{formError}</div>
                 <button className='w-full border-2 p-4 text-xl mt-4 rounded-xl bg-black text-white border-black flex flex-row gap-2 justify-center items-center h-16' onClick={handleSignUp}>Sign Up {showLoader ? <Loader></Loader> : null}</button>
-                <span className='w-full text-center mt-6 font-medium text-xl'>Already have an account? <a className='underline cursor-pointer' onClick={() => { navigate('/signin') }}>Login</a></span>
+                <span className='w-full text-center mt-6 '>Already have an account? <a className='underline cursor-pointer' onClick={() => { navigate('/signin') }}>Login</a></span>
             </div>
         </div>
     </div>
