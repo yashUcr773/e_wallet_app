@@ -62,7 +62,7 @@ export function Signin() {
 
     }
 
-    return <div className='flex items-center justify-center h-[75vh] font-medium sm:font-semibold text-lg sm:text-xl'>
+    return <div className='flex items-center justify-center font-medium sm:font-semibold text-lg sm:text-xl'>
         <div className='form border shadow-lg p-8 bg-white rounded-2xl w-full sm:w-[500px]'>
             <div className='form-header flex flex-col gap-4 justify-center items-center mb-8'>
                 <h3 className='font-extrabold text-3xl sm:text-4xl'>Sign In</h3>

@@ -15,7 +15,7 @@ const USERSIGNIN = zod.object({
 });
 
 const USERUPDATE = zod.object({
-    password: zod.string().optional().or(zod.literal("")),
+    password: zod.string().min(4).max(32).optional().or(zod.literal("")),
     firstName: zod.string().optional().or(zod.literal("")),
     lastName: zod.string().optional().or(zod.literal("")),
 });

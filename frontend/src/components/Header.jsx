@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { isSignedInAtom, userAtom } from '../store/atoms/user';
@@ -19,6 +19,13 @@ export function Header() {
         navigate('/signin')
     }
 
+    useEffect(() => {
+        document.addEventListener('click', (event) => {
+                setShowModal(false)
+                event.preventDefault()
+        })
+    })
+
     return <header className='flex items-center justify-between px-8 w-full h-20 gap-8'>
         <span className='font-bold text-xl sm:text-2xl p-2 cursor-pointer' onClick={() => { navigate('/dashboard') }}>Payments App</span>
         {!isSignedIn ?
@@ -30,21 +37,22 @@ export function Header() {
                 <span className='font-bold text-xl'>
                     Hello, {user.firstname}
                 </span>
-                <div id="dropdownDefaultButton" data-dropdown-toggle="dropdown" onClick={() => { setShowModal(p => !p) }} >
+                <div id="dropdownDefaultButton" data-dropdown-toggle="dropdown" onClick={(e) => { setShowModal(p => !p); e.stopPropagation() }} >
                     <ProfileLogo content={user.firstname[0]} />
                 </div>
-                <div id="dropdown" className={`z-10 ${showModal ? '' : 'hidden'} bg-gray-900 divide-y divide-white rounded-lg shadow w-44  absolute -bottom-[75%] translate-y-[75%] select-none`}>
+                <div id="dropdown" className={`z-10 ${showModal ? '' : 'hidden'} bg-gray-900 divide-y divide-white rounded-lg shadow w-44  absolute translate-y-[70%] select-none`}>
                     <ul className={`py-2 text-sm text-white`} aria-labelledby="dropdownDefaultButton">
                         <li>
                             <a className="block px-4 py-2">Logged in as <span>{user.email}</span></a>
                         </li>
-
                     </ul>
                     <ul className={`py-2 text-sm text-white`} aria-labelledby="dropdownDefaultButton">
                         <li>
+                            <a onClick={() => { navigate('/update') }} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">Update Info</a>
+                        </li>
+                        <li>
                             <a onClick={logout} className="block px-4 py-2 hover:bg-gray-700 cursor-pointer">Logout</a>
                         </li>
-
                     </ul>
                 </div>
             </div>

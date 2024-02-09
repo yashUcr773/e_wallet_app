@@ -100,6 +100,7 @@ router.put("/", authMiddleware, async (req, res) => {
         const lastname = req.body.lastname;
         const password = req.body.password;
 
+
         const { success } = USERUPDATE.safeParse({
             firstname,
             lastname,
@@ -108,7 +109,7 @@ router.put("/", authMiddleware, async (req, res) => {
 
         if (!success) {
             return res.status(411).json({
-                message: "Error while updating information",
+                message: "Incorrect inputs",
             });
         }
 
@@ -124,15 +125,26 @@ router.put("/", authMiddleware, async (req, res) => {
             updateObj.password = hasher(password);
         }
 
-        let update = await db.USER.updateOne(
+
+        let user = await db.USER.findOneAndUpdate(
             {
                 _id: res.locals.userId,
             },
-            updateObj
+            updateObj,
+            {
+                new: true,
+                projection: { lastname: 1, email: 1, firstname: 1, _id: 1 },
+            }
         );
 
         return res.status(200).json({
             message: "Updated successfully",
+            data: {
+                userId: user._id,
+                email: user.email,
+                firstname: user.firstname,
+                lastname: user.lastname,
+            },
         });
     } catch (e) {
         return res.status(411).json({

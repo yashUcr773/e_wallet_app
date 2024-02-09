@@ -7,6 +7,7 @@ import { Dashboard } from "./Dashboard"
 import { SendMoney } from "./SendMoney"
 import { CheckAuth } from './CheckAuth';
 import { CheckLoginStatus } from './CheckLoginStatus'
+import { UpdateInfo } from './UpdateInfo';
 
 
 export function Content() {
@@ -20,6 +21,7 @@ export function Content() {
             <Route element={<CheckAuth />}>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/send" element={<SendMoney />} />
+                <Route path="/update" element={<UpdateInfo />} />
             </Route>
             <Route path='*' element={<Navigate to="/signup" replace />}></Route>
         </Routes>
