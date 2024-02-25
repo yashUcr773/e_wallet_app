@@ -44,9 +44,9 @@ router.post(
             const token = JWT.sign(
                 {
                     userId: user._id,
-                    expiryAt: Date.now() + CONSTANTS.EXPIRYTIME,
+                    expiryAt: Date.now() + CONSTANTS.EXPIRY_TIME,
                 },
-                CONSTANTS.JWTSECRET
+                CONSTANTS.JWT_SECRET
             );
             return res.status(200).json({
                 message: "User created successfully",
@@ -76,8 +76,8 @@ router.post("/signin", userExistsMiddleware("signin"), async (req, res) => {
         const user = res.locals.user;
 
         const token = JWT.sign(
-            { userId: user._id, expiryAt: Date.now() + CONSTANTS.EXPIRYTIME },
-            CONSTANTS.JWTSECRET
+            { userId: user._id, expiryAt: Date.now() + CONSTANTS.EXPIRY_TIME },
+            CONSTANTS.JWT_SECRET
         );
         return res.status(200).json({
             token: token,
@@ -177,14 +177,14 @@ router.get("/bulk", authMiddleware, async (req, res) => {
 router.post("/checkAuth", async (req, res) => {
     const token = req.body?.token?.split(" ")[1];
     try {
-        const { userId, expiryAt } = JWT.verify(token, CONSTANTS.JWTSECRET);
+        const { userId, expiryAt } = JWT.verify(token, CONSTANTS.JWT_SECRET);
         const user = await db.USER.findOne(
             { _id: userId },
             { firstname: 1, lastname: 1, email: 1, _id: 1 }
         );
         const newToken = JWT.sign(
-            { userId: user._id, expiryAt: Date.now() + CONSTANTS.EXPIRYTIME },
-            CONSTANTS.JWTSECRET
+            { userId: user._id, expiryAt: Date.now() + CONSTANTS.EXPIRY_TIME },
+            CONSTANTS.JWT_SECRET
         );
         res.status(200).json({ token: newToken, user });
     } catch (e) {

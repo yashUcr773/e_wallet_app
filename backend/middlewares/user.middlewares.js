@@ -88,7 +88,7 @@ function authMiddleware(req, res, next) {
         const authorization = req.headers?.authorization?.split(" ")[1];
         const { userId, expiryAt } = JWT.verify(
             authorization,
-            CONSTANTS.JWTSECRET
+            CONSTANTS.JWT_SECRET
         );
 
         if (expiryAt <= Date.now()) {

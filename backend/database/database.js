@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { CONSTANTS } = require("../config/constants.config");
 
-mongoose.connect(CONSTANTS.MONGODBCONNECTION + "paytm");
+mongoose.connect(CONSTANTS.MONGO_DB_CONNECTION + "paytm");
 
 const userSchema = new mongoose.Schema({
     email: {
