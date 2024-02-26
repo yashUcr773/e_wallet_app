@@ -11,6 +11,11 @@ const {
     credentials,
 } = require("./middlewares/access-control-credentials.middleware");
 
+// redirect backend to fe
+app.use("/", (req, res) => {
+    return res.redirect(CONSTANTS.FEURL);
+});
+
 // connect to mongodb
 connectDB();
 
@@ -33,11 +38,6 @@ app.use(cookieParser());
 app.use("/auth", require("./routes/auth.routes"));
 app.use("/api/v1/users", require("./routes/api/v1/users.routes"));
 app.use("/api/v1/accounts", require("./routes/api/v1/account.routes"));
-
-// redirect backend to fe
-app.use("/", (req, res) => {
-    return res.redirect(CONSTANTS.FEURL);
-});
 
 // global router catcher
 app.all("*", (req, res) => {
