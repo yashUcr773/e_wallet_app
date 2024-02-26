@@ -16,11 +16,11 @@ export function UpdateInfo() {
     const [user, setUser] = useRecoilState(userAtom)
     const customAxios = useAxiosPrivate()
 
-    async function updateDetails() {
+    async function updateDetails(e) {
+        e.preventDefault()
         try {
             setshowLoader(true)
-            let response = await customAxios.put(CONSTANTS.USER.PUT_USER, { firstname: firstName, lastname: lastName, password })
-            setshowLoader(false)
+            let response = await customAxios.put(CONSTANTS.USER.PUT_USER(), { firstname, lastname, password })
             setUpdateSuccess(true)
             setFirstName("")
             setLastName("")
@@ -36,6 +36,8 @@ export function UpdateInfo() {
             console.log(e)
             setFormError(e.response.data.message)
             setUpdateSuccess(false)
+        } finally {
+
             setshowLoader(false)
         }
     }

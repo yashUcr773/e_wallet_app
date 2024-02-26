@@ -32,7 +32,7 @@ export function Balance() {
             <div className='flex flex-row items-center justify-center w-full'>
                 <Loader size='md'></Loader>
             </div> :
-            <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <h3 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Your Balance: <span>{balance}</span>
             </h3>
         }

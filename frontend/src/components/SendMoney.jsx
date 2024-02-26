@@ -13,8 +13,8 @@ export function SendMoney() {
     const [transferSuccess, setTransferSuccess] = useState(true)
     const customAxios = useAxiosPrivate()
 
-    async function initiateTransfer() {
-
+    async function initiateTransfer(e) {
+        e.preventDefault()
         if (!amount || amount == 0 || amount == "") {
             setAmount("")
             setNetworkFeedback('Enter valid amount')
@@ -31,6 +31,7 @@ export function SendMoney() {
             setNetworkFeedback(response.data.message)
             setTransferSuccess(true)
         } catch (e) {
+            console.log(e)
             setNetworkFeedback(e.response.data.message)
             setTransferSuccess(false)
             setShowLoader(false)
@@ -69,8 +70,8 @@ export function SendMoney() {
                                 </div>
                                 <div className='flex flex-col'>
 
-                                    <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white truncate">{user.firstname} {user.lastname}</h3>
-                                    <span class="text-gray-500 dark:text-gray-400 truncate">{user.email}</span>
+                                    <h3 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white truncate">{user.firstname} {user.lastname}</h3>
+                                    <span className="text-gray-500 dark:text-gray-400 truncate">{user.email}</span>
                                 </div>
                             </div>
 

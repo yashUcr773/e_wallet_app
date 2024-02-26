@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { customAxiosPrivate } from "../../config/Constants";
+import { customAxiosPrivate } from "../../config/CONSTANTS";
 import { useRefreshToken } from "./useRefreshToken";
 import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "../store/atoms/user";
@@ -33,7 +33,7 @@ export function useAxiosPrivate() {
                     prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
                     return customAxiosPrivate(prevRequest)
                 }
-                Promise.reject(error)
+                return Promise.reject(error)
             }
         )
         return () => {

@@ -259,9 +259,6 @@ const handleRefreshToken = async (req, res) => {
         const cookies = req.cookies;
         const sendUserData = req.query.sendUserData;
 
-        console.log(cookies);
-        console.log(sendUserData);
-
         // if token not in cookie, return
         if (!cookies?.jwt) {
             return res.status(403).json({
@@ -273,12 +270,8 @@ const handleRefreshToken = async (req, res) => {
         // get token
         const refreshToken = cookies["jwt"];
 
-        console.log(await USERS_DB.find({}));
-
         // find user in DB
         const foundUser = await USERS_DB.findOne({ refreshToken });
-
-        console.log(foundUser);
 
         // If user not found
         if (!foundUser) {

@@ -103,7 +103,7 @@ const transferMoney = async (req, res) => {
 
         if (sender.balance < amount || typeof amount != "number") {
             await session.abortTransaction();
-            return res.status(400).json({
+            return res.status(401).json({
                 success: false,
                 message: "Insufficient balance",
             });

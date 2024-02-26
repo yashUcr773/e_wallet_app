@@ -36,13 +36,11 @@ app.use("/api/v1/accounts", require("./routes/api/v1/account.routes"));
 
 // redirect backend to fe
 app.use("/", (req, res) => {
-    console.log(req.path);
     return res.redirect(CONSTANTS.FEURL);
 });
 
 // global router catcher
 app.all("*", (req, res) => {
-    console.log(req.path);
     return res.redirect(CONSTANTS.NOTFOUND);
 });
 

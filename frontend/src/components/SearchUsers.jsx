@@ -4,20 +4,22 @@ import { useNavigate } from 'react-router-dom'
 import { Loader } from './Loader'
 import { useAxiosPrivate } from '../hooks/useAxiosPrivate'
 import { useDebouncer } from '../hooks/useDebouncer'
+import { useRecoilValue } from 'recoil'
+import { userAtom } from '../store/atoms/user'
 
 export function SearchUsers() {
     const [filter, setFilter] = useState("")
     const [users, setUsers] = useState([])
     const [networkCallStatus, setNetworkCallStatus] = useState(false)
     const customAxios = useAxiosPrivate()
+    const curruser = useRecoilValue(userAtom)
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 setNetworkCallStatus(true)
                 let response = await customAxios(CONSTANTS.USER.GET_BY_FILTER(""))
-                console.log(response)
-                setUsers(response.data.users)
+                setUsers(response.data.users.filter((user) => user._id != curruser.userId))
             } catch (e) {
                 console.log(e)
             } finally {
@@ -29,7 +31,7 @@ export function SearchUsers() {
 
     const debouncedSearch = useDebouncer(async (search) => {
         let response = await customAxios(CONSTANTS.USER.GET_BY_FILTER(search))
-        setUsers(response.data.users)
+        setUsers(response.data.users.filter((user) => user._id != curruser.userId))
     }, 300);
 
     function filterChangeHandler(e) {
@@ -69,15 +71,18 @@ export function User({ user }) {
         navigate('/send', { state: user })
     }
 
-    return <div className='user-container flex flex-row items-center justify-between'>
-        <div className='name-container flex flex-row items-center gap-2'>
+    return <div className='user-container flex flex-row items-center justify-between gap-8'>
+        <div className='name-container flex flex-row items-center gap-2 truncate'>
             <div className="pointer-events-none relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
                 <svg className="absolute w-12 h-12 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path>
                 </svg>
             </div>
-            <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white truncate">{user.firstname} {user.lastname}</h3>
-            <span class="text-gray-500 dark:text-gray-400 truncate">{user.email}</span>
+            <div className='truncate'>
+
+                <h3 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white truncate">{user.firstname} {user.lastname}</h3>
+                <span className="text-gray-500 dark:text-gray-400 truncate">{user.email}</span>
+            </div>
         </div>
         <button to="/signup"
             onClick={sendMoney}
