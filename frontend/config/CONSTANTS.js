@@ -3,8 +3,8 @@ import axios from "axios";
 export const CONSTANTS = {
     EMAIL_REGEX: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,64}$/,
     PWD_REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/,
-    // APIBASEURL: "https://www.digitaldime.win/",
-    APIBASEURL: "http://192.168.1.77:3000/",
+    APIBASEURL: "https://www.digitaldime.win/",
+    // APIBASEURL: "http://192.168.1.77:3000/",
     AUTH: {
         POST_SIGNUP: "/auth/signup",
         POST_SIGNIN: "/auth/signin",
