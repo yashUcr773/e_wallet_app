@@ -1,21 +1,17 @@
-import { Content } from "./components/Content"
-import { Header } from "./components/Header"
-import { Footer } from "./components/Footer"
-import { BrowserRouter } from "react-router-dom"
+import { BrowserRouter } from 'react-router-dom'
+import './App.css'
 import { RecoilRoot } from 'recoil'
+import { Main } from './components/Main'
 
-
-function App() {
-
-    return <div>
-            <RecoilRoot>
-                <BrowserRouter>
-                    <Header></Header>
-                    <Content></Content>
-                    <Footer></Footer>
-                </BrowserRouter>
-            </RecoilRoot>
-        </div>
+export default function App() {
+    return (
+        <>
+            <BrowserRouter>
+                <RecoilRoot>
+                    <Main></Main>
+                </RecoilRoot>
+            </BrowserRouter>
+        </>
+    )
 }
 
-export default App

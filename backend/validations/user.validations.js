@@ -22,9 +22,9 @@ const passwordSchema = zod
 
 // define schemas
 const USER_SIGNUP_VALIDATOR = zod.object({
-    firstname: zod.string().min(3),
-    lastname: zod.string().min(3),
-    email: zod.string().email(),
+    firstname: zod.string().min(2),
+    lastname: zod.string().min(2),
+    email: zod.string().email().min(2),
     password: passwordSchema,
 });
 
@@ -35,8 +35,8 @@ const USER_SIGNIN_VALIDATOR = zod.object({
 
 const USER_UPDATE_VALIDATOR = zod.object({
     password: passwordSchema.optional().or(zod.literal("")),
-    firstName: zod.string().optional().or(zod.literal("")),
-    lastName: zod.string().optional().or(zod.literal("")),
+    firstName: zod.string().min(2).optional().or(zod.literal("")),
+    lastName: zod.string().min(2).optional().or(zod.literal("")),
 });
 
 module.exports = {

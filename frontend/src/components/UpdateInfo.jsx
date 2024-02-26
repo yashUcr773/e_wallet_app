@@ -1,40 +1,37 @@
-import { FormComponent } from './FormComponent'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { userAtom } from '../store/atoms/user'
-import axios from 'axios'
-import { useEnterListener } from '../hooks/useEnterListener'
 import { useState } from 'react'
 import { CONSTANTS } from '../../config/CONSTANTS'
 import { Loader } from './Loader'
+import { useAxiosPrivate } from '../hooks/useAxiosPrivate'
 
 export function UpdateInfo() {
 
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
+    const [firstname, setFirstName] = useState("")
+    const [lastname, setLastName] = useState("")
     const [password, setPassword] = useState("")
     const [formError, setFormError] = useState("")
     const [showLoader, setshowLoader] = useState("")
     const [updateSuccess, setUpdateSuccess] = useState(false)
     const [user, setUser] = useRecoilState(userAtom)
-    useEnterListener([firstName, lastName, password], updateDetails)
+    const customAxios = useAxiosPrivate()
 
     async function updateDetails() {
         try {
-
             setshowLoader(true)
-            let response = await axios.put(CONSTANTS.APIBASEURL + '/user', { firstname: firstName, lastname: lastName, password }, { headers: { Authorization: localStorage.getItem('token') } })
+            let response = await customAxios.put(CONSTANTS.USER.PUT_USER, { firstname: firstName, lastname: lastName, password })
             setshowLoader(false)
             setUpdateSuccess(true)
             setFirstName("")
             setLastName("")
             setPassword("")
             setFormError(response.data.message)
-            
+
             setUser((p) => ({
                 ...p,
                 firstname: response.data.data.firstname, lastname: response.data.data.lastname
             }))
-            
+
         } catch (e) {
             console.log(e)
             setFormError(e.response.data.message)
@@ -43,22 +40,62 @@ export function UpdateInfo() {
         }
     }
 
+    return (
+        <section className="bg-gray-50 dark:bg-gray-900">
+            <div className="flex flex-col gap-4 items-center justify-start mt-8 px-6 py-8 mx-auto lg:py-0 ">
+                <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 xl:p-0 dark:bg-gray-800 dark:border-primary-500 border border-primary-500">
+                    <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
 
-    return <div className='flex items-center justify-center  font-medium sm:font-semibold text-lg sm:text-xl'>
-        <div className='form border shadow-lg p-8 bg-white rounded-2xl w-full sm:w-[500px]'>
-            <div className='form-header flex flex-col gap-4 justify-center items-center mb-8'>
-                <h3 className='font-extrabold text-3xl sm:text-4xl'>Update</h3>
-                <span className='text-slate-500 text-center'>Enter details to update</span>
-            </div>
-            <div className='form-content flex flex-col gap-2'>
-                <FormComponent label={"Firstname"} placeholder={user.firstname} type={"text"} formSetter={setFirstName} value={firstName}/>
-                <FormComponent label={"Lastname"} placeholder={user.lastname} type={"text"} formSetter={setLastName} value={lastName}/>
-                <FormComponent label={"Password"} placeholder={""} type={"password"} formSetter={setPassword} value={password}/>
-            </div>
-            <div className='form-footer flex flex-col justify-center items-center'>
-                <div className={`error-container ${updateSuccess ? 'text-green-600' : 'text-red-500'} p-2 mt-2`}>{formError}</div>
-                <button className='w-full border-2 p-4 mt-4 rounded-xl bg-black text-white border-black flex flex-row gap-2 justify-center items-center h-16' onClick={updateDetails}>Update {showLoader ? <Loader></Loader> : null}</button>
-            </div>
-        </div>
-    </div>
+                        <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                            Enter details to update
+                        </h1>
+
+                        <form className="space-y-4 md:space-y-6" onSubmit={updateDetails}>
+                            <div>
+                                <label htmlFor="firstname"
+                                    className="block text-sm mb-2 font-medium text-gray-900 dark:text-white">
+                                    Firstname</label>
+                                <input type="text" name="firstname" id="firstname"
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    value={firstname}
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder={user.firstname} />
+                            </div>
+
+                            <div>
+                                <label htmlFor="lastname"
+                                    className="block text-sm mb-2 font-medium text-gray-900 dark:text-white">
+                                    Lastname</label>
+                                <input type="text" name="lastname" id="lastname"
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    value={lastname}
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder={user.lastname} />
+                            </div>
+
+                            <div>
+                                <label htmlFor="password"
+                                    className="block text-sm mb-2 font-medium text-gray-900 dark:text-white">
+                                    Password</label>
+                                <input type="password" id="password" name="password"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={password}
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder={"••••••••"} />
+                            </div>
+
+                            <p className={`rounded-lg w-full text-center text-sm font-normal ${updateSuccess ? 'text-green-600' : 'text-red-600'} whitespace-break-spaces`}>{formError}</p>
+
+                            <button type="submit"
+                                className="flex flex-row items-center justify-center gap-4 w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                Update {showLoader ? <Loader size={'sm'} /> : null}
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div >
+            </div >
+        </section >
+    )
 }

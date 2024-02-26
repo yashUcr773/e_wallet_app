@@ -7,15 +7,15 @@ export const isSignedInAtom = atom({
 
 export const userAtom = atom({
     key: "userAtom",
-    default: {
-        firstname: "John",
-        lastname: "Doe",
-        email: "johndoe@gmail.com",
-        userId: "XXXXXXXXXXXX",
-    },
+    default: null,
 });
 
 export const balanceAtom = atom({
     key: "balanceAtom",
     default: 0,
+});
+
+export const accessTokenAtom = atom({
+    key: "accessTokenAtom",
+    default: null,
 });

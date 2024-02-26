@@ -5,8 +5,8 @@ const { verifyJWT } = require("../../../middlewares/verifyJWT");
 
 router.use(verifyJWT);
 router.get("/id/:id", userController.getUserById);
-router.get("/", userController.getAllUsers);
 router.get("/filter", userController.getUserByFilter);
+router.get("/", userController.getAllUsers);
 router.put("/", userController.updateUserInfo);
 
 module.exports = router;

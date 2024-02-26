@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { balanceAtom, userAtom } from '../store/atoms/user'
-import axios from 'axios'
+import { useRecoilState, } from 'recoil'
+import { balanceAtom, } from '../store/atoms/user'
 import { CONSTANTS } from '../../config/CONSTANTS'
 import { Loader } from './Loader'
+import { useAxiosPrivate } from '../hooks/useAxiosPrivate'
 
 export function Balance() {
 
-    const user = useRecoilValue(userAtom)
     const [balance, setBalance] = useRecoilState(balanceAtom)
     const [networkCallStatus, setNetworkCallStatus] = useState(false)
+    const customAxiosPrivate = useAxiosPrivate()
 
     useEffect(() => {
         updateBalance()
@@ -17,24 +17,24 @@ export function Balance() {
 
     async function updateBalance() {
         try {
-
-            let response = await axios.get(CONSTANTS.APIBASEURL + '/account/balance', {
-                headers: {
-                    'authorization': localStorage.getItem('token'),
-                }
-            })
-
+            setNetworkCallStatus(true)
+            let response = await customAxiosPrivate(CONSTANTS.ACCOUNT.GET_MY_BALANCE)
             setBalance(response.data.balance)
         } catch (e) {
             console.log(e)
+        } finally {
+            setNetworkCallStatus(false)
         }
-        setNetworkCallStatus(true)
     }
 
     return <>
         {networkCallStatus ?
-            <span className='pb-4 font-bold text-xl'>Your Balance: <span>{balance}</span></span> :
-            <Loader></Loader>
+            <div className='flex flex-row items-center justify-center w-full'>
+                <Loader size='md'></Loader>
+            </div> :
+            <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                Your Balance: <span>{balance}</span>
+            </h3>
         }
     </>
 }
