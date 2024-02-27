@@ -10,8 +10,8 @@ export function Signin() {
     const location = useLocation()
     const from = location.state?.from?.pathname || "/"
 
-    const [email, setEmail] = useState("first-last-3@gmail.com")
-    const [password, setPassword] = useState("Compro@11")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const [err, setErr] = useState("")
     const [showLoader, setShowLoader] = useState(false)
