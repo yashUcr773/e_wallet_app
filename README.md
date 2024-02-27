@@ -53,3 +53,14 @@ Generate secure access token using `require('crypto').randomBytes(64).toString('
 ## Attribution
 
 - Tailwind styles inspired from [Flowbite](https://flowbite.com/).
+
+## Planned Functionality
+- [x] Sign in and signup
+- [x] Update user info
+- [ ] Allow users to add profile pictures
+- [ ] Create Admin role to modify user funds
+- [ ] Allow users to ask admin to add funds
+- [x] Allow users to send and recieve money
+- [x] Connect to a database
+- [ ] Transaction History
+- [ ] Notificatons and Alerts
