@@ -14,8 +14,19 @@ const {
 // connect to mongodb
 connectDB();
 
-// Cross Origin Resource Sharing
-app.use(cors());
+// Set allow credentials to true to send cookie
+app.use(credentials);
+
+// Cross-Origin Resource Sharing
+app.use((req, res, next) => {
+  if (req.path === "/") {
+    // Allow all origins for the root path
+    cors()(req, res, next);
+  } else {
+    // Use CORS with options for other routes
+    cors(corsOptions)(req, res, next);
+  }
+});
 
 // built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
@@ -27,24 +38,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.use(
-    "/auth",
-    credentials,
-    cors(corsOptions),
-    require("./routes/auth.routes")
-);
-app.use(
-    "/api/v1/users",
-    credentials,
-    cors(corsOptions),
-    require("./routes/api/v1/users.routes")
-);
-app.use(
-    "/api/v1/accounts",
-    credentials,
-    cors(corsOptions),
-    require("./routes/api/v1/account.routes")
-);
+app.use("/auth", require("./routes/auth.routes"));
+app.use("/api/v1/users", require("./routes/api/v1/users.routes"));
+app.use("/api/v1/accounts", require("./routes/api/v1/account.routes"));
 
 // redirect backend to fe
 app.use("/", (req, res) => {
